@@ -1,0 +1,3 @@
+include README.md
+include LICENSE
+include reddit_extract/resources/search_template.txt

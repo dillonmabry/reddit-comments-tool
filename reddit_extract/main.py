@@ -5,7 +5,6 @@ import argparse
 from reddit_extract import RedditService
 from reddit_extract import load_pattern_from_file
 from reddit_extract import MultiProcess
-from itertools import product
 
 
 def main():

@@ -5,7 +5,7 @@ import argparse
 from reddit_extract import RedditService
 from reddit_extract import load_pattern_from_file
 from reddit_extract import MultiProcess
-# from itertools import product
+from itertools import product
 
 
 def main():
@@ -27,13 +27,16 @@ def main():
                       '9t6fib', 'a2ot1d', 'abv2gl', 'am5uk7', 'aw79c5']
     sample_dict = {'Form': None, 'Entity': None, 'Pending': None,
                    'Approved': None, 'Wait': None, 'State': None}
-    for thread_id in sample_threads:
-        reddit.dump_pattern_comments_csv(
-            args.subreddit, thread_id, load_pattern_from_file(), sample_dict)
-    # multi = MultiProcess(threads=3)
-    # result = multi.process(operation=reddit.dump_pattern_comments_csv, items=product(
-    #     args.subreddit, sample_threads, load_pattern_from_file(), sample_dict))
-    # print(result)
+
+    n_threads = len(sample_threads)
+    multi = MultiProcess(threads=n_threads)
+    p_args = list(zip(
+        [args.subreddit] * n_threads,
+        sample_threads,
+        [load_pattern_from_file()] * n_threads,
+        [sample_dict] * n_threads)
+    )
+    multi.process(operation=reddit.dump_pattern_comments_csv, items=p_args)
 
 
 if __name__ == '__main__':

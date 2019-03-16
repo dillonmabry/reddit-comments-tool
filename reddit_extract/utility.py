@@ -40,6 +40,9 @@ def dump_csv(data, file, headers):
         file: the file name to dump to
         headers: the csv headers
     """
+    if data is None or len(data) == 0:
+        print("No data or empty data supplied, aborting dump")
+        return
     with open(file, 'w', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=headers)
         writer.writeheader()

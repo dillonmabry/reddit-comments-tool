@@ -18,6 +18,6 @@ class MultiProcess(object):
         self.pool.join()
 
     def process(self, operation, items):
-        result = self.pool.starmap(operation, items)
+        result = self.pool.starmap(operation, items) # multi-args starmap
         self.pool.close()
         return result

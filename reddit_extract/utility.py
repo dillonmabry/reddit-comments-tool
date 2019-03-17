@@ -49,15 +49,16 @@ def dump_csv(data, file, headers):
         writer.writerows(data)
 
 
-def dump_txt(data, file):
+def dump_txt(data, file, delimiter='\n'):
     """
     Txt file dump: dumps txt file from data of list of dicts
     Args:
         data: data to dump, format: list of dicts
         file: the file name to dump to
+        delimeter: the delimeter to use for separating each comment text
     """
     with open(file, 'w', newline='') as f:
         try:
-            f.write('\n'.join(data))
+            f.write(delimiter.join(data))
         except Exception:
             raise

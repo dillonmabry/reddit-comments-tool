@@ -73,7 +73,8 @@ class RedditService(object):
         try:
             dump_txt(
                 data=comments,
-                file='{0}_{1}_comments.txt'.format(subreddit, thread_id)
+                file='{0}_{1}_comments.txt'.format(subreddit, thread_id,
+                delimiter='\n')
             )
             return True
         except Exception:

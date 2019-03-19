@@ -1,6 +1,6 @@
 import pkg_resources
 import csv
-
+import os
 """
 Module for helper functions
 """
@@ -41,8 +41,10 @@ def dump_csv(data, file, headers):
         headers: the csv headers
     """
     if data is None or len(data) == 0:
-        print("No data or empty data supplied, aborting dump")
+        print("No data supplied, aborting dump")
         return
+    # Create directory for subreddit/thread
+    os.makedirs(os.path.dirname(file), exist_ok=True)
     with open(file, 'w', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=headers)
         writer.writeheader()
@@ -57,6 +59,11 @@ def dump_txt(data, file, delimiter='\n'):
         file: the file name to dump to
         delimeter: the delimeter to use for separating each comment text
     """
+    if data is None or len(data) == 0:
+        print("No data supplied, aborting dump")
+        return
+    # Create directory for subreddit/thread
+    os.makedirs(os.path.dirname(file), exist_ok=True)
     with open(file, 'w', newline='') as f:
         try:
             f.write(delimiter.join(data))

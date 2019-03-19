@@ -73,8 +73,8 @@ class RedditService(object):
         try:
             dump_txt(
                 data=comments,
-                file='{0}_{1}_comments.txt'.format(subreddit, thread_id,
-                delimiter='\n')
+                file='./{0}/{1}_comments.txt'.format(subreddit, thread_id,
+                                                     delimiter='\n')
             )
             return True
         except Exception:
@@ -97,7 +97,7 @@ class RedditService(object):
         try:
             dump_csv(
                 data=comments,
-                file='{0}_{1}_comments.csv'.format(subreddit, thread_id),
+                file='./{0}/{1}_comments.csv'.format(subreddit, thread_id),
                 headers=list(dictionary.keys())  # headers as keys from dict
             )
             return True

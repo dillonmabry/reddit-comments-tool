@@ -103,5 +103,7 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-# Generated csv files
-/reddit_extract/*.csv
+# All csv and text files generated via a folder for subreddit identified
+# Example: /<subreddit>/<thread_id>.csv
+/**/*_comments.csv
+/**/*_comments.txt

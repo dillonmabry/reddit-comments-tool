@@ -19,18 +19,30 @@ Required:
 - Reddit User Agent
 - Subreddit
 - List of Thread IDs for bulk extract of multiple Reddit threads
-- Dictionary (If using CSV regex search: dictionary should match your "search_template.txt" under /resources for regex template customization)
+- Dictionary (Should match your regex search pattern, otherwise your headers will not match the data retrieved, for example: a defined copy/paste form for a reddit thread that users reply to, aka "Megathreads")
+- Regex Pattern (for csv)
 
-Current usage:
+Extracting all comments for list of threads to csv with defined headers and search pattern:
 ```
 import reddit_extract
 reddit_extract.extract_comments_csv_bulk(<Reddit ClientID>, <Reddit ClientSecret>, <Reddit User Agent>, <Subreddit>, <Thread IDs>, <Dictionary Headers>)
 ```
-or
+
+Extracting all comments for list of threads to txt:
 ```
 import reddit_extract
 reddit_extract.extract_comments_txt_bulk(<Reddit ClientID>, <Reddit ClientSecret>, <Reddit User Agent>, <Subreddit>, <Thread IDs>)
 ```
+
+Example:
+```
+import reddit_extract
+threads = ['aw79c5', 'b7x7n1', 'am5uk7', 'bji681', 'abv2gl', '9klf8e']
+search_pattern = r'Form: (.*)\n*Entity: (.*)\n*Pending: (.*)\n*Approved: (.*)\n*Standardized wait: (.*)\n*STATE: (.*)'
+headers = {'Form': 'Form', 'Entity': 'Entity', 'Pending': 'Pending', 'Approved': 'Approved', 'Standardized Wait': 'Standardized Wait', 'STATE': 'STATE'}
+reddit_extract.extract_comments_csv_bulk(<client_id>, <client_secret>, <user_agent>, 'nfa', threads, headers, search_pattern)
+```
+
 ## Tests
 ```
 python setup.py test

@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name = 'reddit_extract',
-    version = '0.1.0',
+    version = '0.1.2',
     description = 'Extract reddit comments and general API helper',
     author = 'Dillon Mabry',
     author_email = 'rapid.dev.solutions@gmail.com',

@@ -7,7 +7,7 @@ def readme():
 
 
 setup(name='reddit_extract',
-      version='0.1.4',
+      version='0.1.5',
       description='Tool for extracting reddit comments',
       long_description=readme(),
       author='Dillon Mabry',

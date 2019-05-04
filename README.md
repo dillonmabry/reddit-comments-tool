@@ -11,6 +11,10 @@ General package for reddit comments analysis, data manipulation, and other areas
 ```
 pip install .
 ```
+or for released version:
+```
+pip install reddit-extract
+```
 
 ## How to Use
 Required:

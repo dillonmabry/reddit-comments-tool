@@ -107,3 +107,6 @@ venv.bak/
 # Example: /<subreddit>/<thread_id>.csv
 /**/*_comments.csv
 /**/*_comments.txt
+
+# Ignore test commands for keeping temp files for running dev commands with sensitive IDs
+test_commands.txt

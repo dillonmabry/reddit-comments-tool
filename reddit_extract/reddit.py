@@ -1,6 +1,7 @@
 import praw
 import re
 from reddit_extract import dump_csv, dump_txt
+from reddit_extract import Logger
 
 
 class RedditService(object):
@@ -16,6 +17,7 @@ class RedditService(object):
         self.reddit = praw.Reddit(client_id=client_id,
                                   client_secret=client_secret,
                                   user_agent=user_agent)
+        self.logger = Logger(self.__class__.__name__).get()
 
     def get_all_comments(self, subreddit, thread_id):
         """
@@ -68,16 +70,17 @@ class RedditService(object):
             thread_id: the unique ID of the thread
         """
         comments = self.get_all_comments(subreddit, thread_id)
-        print('{0} total comments retrieved for subreddit {1} and thread {2}'
-              .format(str(len(comments)), subreddit, thread_id))
         try:
             dump_txt(
                 data=comments,
                 file='./{0}/{1}_comments.txt'.format(subreddit, thread_id,
                                                      delimiter='\n')
             )
+            self.logger.info('{0} total comments retrieved for subreddit {1} and thread {2}'
+                             .format(str(len(comments)), subreddit, thread_id))
             return True
         except Exception:
+            self.logger.error('Something went wrong dumping all comments txt for subreddit: {0} and thread id: {1}'.format(subreddit, thread_id))
             raise
 
     def dump_pattern_comments_csv(self, subreddit, thread_id, pattern, dictionary):
@@ -92,14 +95,15 @@ class RedditService(object):
         """
         comments = self.get_pattern_comments(
             subreddit, thread_id, pattern, dictionary)
-        print('{0} total comments retrieved for subreddit {1} and thread {2}'
-              .format(str(len(comments)), subreddit, thread_id))
         try:
             dump_csv(
                 data=comments,
                 file='./{0}/{1}_comments.csv'.format(subreddit, thread_id),
                 headers=list(dictionary.keys())  # headers as keys from dict
             )
+            self.logger.info('{0} total comments retrieved for subreddit {1} and thread {2}'
+                             .format(str(len(comments)), subreddit, thread_id))
             return True
         except Exception:
+            self.logger.error('Something went wrong dumping comments csv for subreddit: {0} and thread id: {1}'.format(subreddit, thread_id))
             raise

@@ -1,6 +1,7 @@
 import pkg_resources
 import csv
 import os
+from collections import Counter
 """
 Module for helper functions
 """
@@ -18,6 +19,18 @@ def load_string_from_file(filepath):
             return data
     except FileNotFoundError as e:
         raise e
+
+
+def find_duplicates(items):
+    """
+    Find duplicates in list and return
+    Args:
+        items: list of items
+    """
+    if len(items) != len(set(items)):
+        duplicates = [item for item, count in Counter(
+            items).items() if count > 1]
+        return duplicates
 
 
 def load_pattern_from_file():

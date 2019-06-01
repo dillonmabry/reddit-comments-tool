@@ -2,6 +2,8 @@ import pkg_resources
 import csv
 import os
 from collections import Counter
+import pandas as pd
+from glob import glob
 """
 Module for helper functions
 """
@@ -17,8 +19,8 @@ def load_string_from_file(filepath):
         with open(filepath, 'r') as myfile:
             data = myfile.read()
             return data
-    except FileNotFoundError as e:
-        raise e
+    except FileNotFoundError:
+        raise
 
 
 def find_duplicates(items):
@@ -53,15 +55,32 @@ def dump_csv(data, file, headers):
         file: the file name to dump to
         headers: the csv headers
     """
-    if data is None or len(data) == 0:
-        print("No data supplied, aborting dump")
-        return
-    # Create directory for subreddit/thread
-    os.makedirs(os.path.dirname(file), exist_ok=True)
-    with open(file, 'w', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=headers)
-        writer.writeheader()
-        writer.writerows(data)
+    try:
+        # Create directory for subreddit/thread
+        os.makedirs(os.path.dirname(file), exist_ok=True)
+        with open(file, 'w', newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=headers)
+            writer.writeheader()
+            writer.writerows(data)
+    except Exception:
+        raise
+
+
+def merge_dump_csv(location, file):
+    """
+    Merge and dump all csvs in directory to a single csv
+    Args:
+        location: the location/directory of the csvs to merge
+        file: the file name to dump to, final merged csv
+    """
+    try:
+        dfs = [pd.read_csv(f, encoding='latin-1') for f in glob('{0}/*.csv'.format(location))]
+        data = pd.concat(dfs, ignore_index=True)
+        # Create directory for subreddit/thread
+        os.makedirs(os.path.dirname(file), exist_ok=True)
+        data.to_csv(file, index=False)
+    except Exception:
+        raise
 
 
 def dump_txt(data, file, delimiter='\n'):
@@ -72,13 +91,10 @@ def dump_txt(data, file, delimiter='\n'):
         file: the file name to dump to
         delimeter: the delimeter to use for separating each comment text
     """
-    if data is None or len(data) == 0:
-        print("No data supplied, aborting dump")
-        return
-    # Create directory for subreddit/thread
-    os.makedirs(os.path.dirname(file), exist_ok=True)
-    with open(file, 'w', newline='') as f:
-        try:
+    try:
+        # Create directory for subreddit/thread
+        os.makedirs(os.path.dirname(file), exist_ok=True)
+        with open(file, 'w', newline='') as f:
             f.write(delimiter.join(data))
-        except Exception:
-            raise
+    except Exception:
+        raise

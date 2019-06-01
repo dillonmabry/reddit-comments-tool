@@ -1,10 +1,12 @@
 import praw
 import re
-from reddit_extract import dump_csv, dump_txt
+from reddit_extract import dump_csv, dump_txt, merge_dump_csv
 from reddit_extract import Logger
 
 
 class RedditService(object):
+
+    _logger = Logger(__name__).get()
 
     def __init__(self, client_id, client_secret, user_agent):
         """
@@ -70,6 +72,9 @@ class RedditService(object):
             thread_id: the unique ID of the thread
         """
         comments = self.get_all_comments(subreddit, thread_id)
+        if comments is None or len(comments) == 0:
+            self.logger.info('No comments retrieved for subreddit: {0} and thread id: {1}'.format(
+                subreddit, thread_id))
         try:
             dump_txt(
                 data=comments,
@@ -78,9 +83,9 @@ class RedditService(object):
             )
             self.logger.info('{0} total comments retrieved for subreddit {1} and thread {2}'
                              .format(str(len(comments)), subreddit, thread_id))
-            return True
         except Exception:
-            self.logger.error('Something went wrong dumping all comments txt for subreddit: {0} and thread id: {1}'.format(subreddit, thread_id))
+            self.logger.exception(
+                'Something went wrong in dump_all_comments_txt for subreddit: {0} and thread id: {1}'.format(subreddit, thread_id))
             raise
 
     def dump_pattern_comments_csv(self, subreddit, thread_id, pattern, dictionary):
@@ -95,6 +100,9 @@ class RedditService(object):
         """
         comments = self.get_pattern_comments(
             subreddit, thread_id, pattern, dictionary)
+        if comments is None or len(comments) == 0:
+            self.logger.info('No comments retrieved for subreddit: {0} and thread id: {1}'.format(
+                subreddit, thread_id))
         try:
             dump_csv(
                 data=comments,
@@ -103,7 +111,31 @@ class RedditService(object):
             )
             self.logger.info('{0} total comments retrieved for subreddit {1} and thread {2}'
                              .format(str(len(comments)), subreddit, thread_id))
-            return True
         except Exception:
-            self.logger.error('Something went wrong dumping comments csv for subreddit: {0} and thread id: {1}'.format(subreddit, thread_id))
+            self.logger.exception(
+                'Something went wrong in dump_pattern_comments_csv for subreddit: {0} and thread id: {1}'.format(subreddit, thread_id))
+            raise
+
+    @classmethod
+    def merge_csv_bulk(cls, subreddit, file):
+        """
+        Merge multiple csvs under subreddit folder to a single file
+        Args:
+            subreddit: the subreddit folder extract to merge all threads
+            file: the single csv file to merge to
+        """
+        try:
+            merge_dump_csv(
+                subreddit, './{0}/{1}.csv'.format(subreddit, file))
+        except ValueError:
+            cls._logger.exception(
+                'File(s) or directory not available in merge_csv_bulk for subreddit: {0}'.format(subreddit))
+            raise
+        except FileNotFoundError:
+            cls._logger.exception(
+                'File(s) or directory not found in merge_csv_bulk for subreddit: {0}'.format(subreddit))
+            raise
+        except Exception:
+            cls._logger.exception(
+                'Something went wrong in merge_csv_bulk for subreddit: {0}'.format(subreddit))
             raise

@@ -16,6 +16,7 @@ class TestReddit(TestCase):
         self.assertTrue(hasattr(mock_service, 'get_pattern_comments'))
         self.assertTrue(hasattr(mock_service, 'dump_all_comments_txt'))
         self.assertTrue(hasattr(mock_service, 'dump_pattern_comments_csv'))
+        self.assertTrue(hasattr(mock_service, 'merge_csv_bulk'))
         self.assertTrue(hasattr(mock_service, '__init__'))
 
     def test_dump_txt_comments(self):
@@ -24,6 +25,10 @@ class TestReddit(TestCase):
 
     def test_dump_csv_comments(self):
         #TODO: Test dumping csv comments, refactor separation of concern for Reddit class
+        self.assertTrue(True)
+
+    def test_merge_csv_comments(self):
+        #TODO: Test merge dump of files via directory
         self.assertTrue(True)
 
     @classmethod

@@ -61,6 +61,16 @@ def extract_comments_txt_bulk(client_id, client_secret, user_agent, subreddit, t
         operation=reddit.dump_all_comments_txt, items=p_args)
 
 
+def merge_subreddit_threads(subreddit, file):
+    """
+    Merge subreddit directory thread csvs into single csv
+    Args:
+        subreddit: the subreddit directory of the extracted csv files
+        file: the file location to save as
+    """
+    RedditService.merge_csv_bulk(subreddit, file)
+
+
 def main():
     """
     Main argparse for command line

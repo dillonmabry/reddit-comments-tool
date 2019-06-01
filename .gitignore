@@ -36,16 +36,28 @@ pip-log.txt
 pip-delete-this-directory.txt
 
 # Unit test / coverage reports
-htmlcov/
-.tox/
+*~
+*.pyc
+*.pyo
+.DS_Store
+.nose
+*.egg-info
+*.bak
+*.rej
+*$py.class
+*.orig
+example.cfg
 .coverage
-.coverage.*
-.cache
 nosetests.xml
-coverage.xml
-*.cover
-.hypothesis/
-.pytest_cache/
+xunit.xml
+_env
+doc/.build
+dist
+build
+.noseids
+.tox
+.*.sw[nop]
+cover
 
 # Translations
 *.mo
@@ -110,3 +122,6 @@ venv.bak/
 
 # Ignore test commands for keeping temp files for running dev commands with sensitive IDs
 test_commands.txt
+
+# Ignore vscode settings
+.vscode

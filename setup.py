@@ -7,7 +7,7 @@ def readme():
 
 
 setup(name='reddit_extract',
-      version='0.1.6',
+      version='0.2.0',
       description='Tool for extracting reddit comments',
       long_description=readme(),
       long_description_content_type='text/markdown',
@@ -18,7 +18,7 @@ setup(name='reddit_extract',
       packages=['reddit_extract'],
       test_suite='nose.collector',
       tests_require=['nose'],
-      install_requires=['praw', 'requests'],
+      install_requires=['praw', 'requests', 'pandas'],
       include_package_data=True,
       data_files=[('', [
           'reddit_extract/resources/search_template.txt'
